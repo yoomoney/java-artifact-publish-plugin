@@ -4,12 +4,12 @@ buildscript {
 apply plugin: 'yamoney-gradle-project-plugin'
 apply plugin: 'yamoney-kotlin-module-plugin'
 
-pluginId = 'yamoney-artifact-publish-plugin'
+pluginId = 'yamoney-java-artifact-publish-plugin'
 gradlePlugin {
     plugins {
         artifactPublishPlugin {
             id = pluginId
-            implementationClass = "ru.yandex.money.gradle.plugins.publishing.ArtifactPublishPlugin"
+            implementationClass = "ru.yandex.money.gradle.plugins.javapublishing.JavaArtifactPublishPlugin"
         }
     }
 }

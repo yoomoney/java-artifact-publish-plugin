@@ -1,4 +1,4 @@
-# artifact-publish-plugin
+# java-artifact-publish-plugin
 Плагин реализует и настраивает функционал публикации артефакта.
 
 ## Подключение
@@ -6,7 +6,7 @@
 ```groovy
 repositories {
     dependencies {
-        classpath 'ru.yandex.money.gradle.plugins:yamoney-artifact-publish-plugin:1.0.0'
+        classpath 'ru.yandex.money.gradle.plugins:yamoney-java-artifact-publish-plugin:1.0.0'
     }
 }
 ```
@@ -15,14 +15,14 @@ repositories {
 buildscript {
     apply from: 'project.gradle', to: buildscript
 }
-apply plugin: 'yamoney-artifact-publish-plugin'
+apply plugin: 'yamoney-java-artifact-publish-plugin'
 ```
 
 ## Конфигурация
 
 Плагин конфигурируется следующим образом:
 ```groovy
-artifactPublish {
+javaArtifactPublishSettings {
     // Имя пользователя для отгрузки в Nexus, обязательный параметр.
     nexusUser = System.getenv("NEXUS_USER")
     // Пароль пользователя для отгрузки в Nexus, обязательный параметр.

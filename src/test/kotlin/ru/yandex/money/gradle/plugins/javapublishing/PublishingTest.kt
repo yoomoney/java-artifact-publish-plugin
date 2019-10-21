@@ -1,4 +1,4 @@
-package ru.yandex.money.gradle.plugins.publishing
+package ru.yandex.money.gradle.plugins.javapublishing
 
 import org.junit.Test
 
@@ -11,7 +11,7 @@ class PublishingTest : AbstractReleaseTest() {
     @Test
     fun `should publish`() {
         buildFile.appendText("""
-        artifactPublish {
+        javaArtifactPublishSettings {
             artifactId = "test_artifact_id"
             groupId = "test_group_id"
         }

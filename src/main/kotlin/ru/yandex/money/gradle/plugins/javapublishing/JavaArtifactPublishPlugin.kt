@@ -1,4 +1,4 @@
-package ru.yandex.money.gradle.plugins.publishing
+package ru.yandex.money.gradle.plugins.javapublishing
 
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin
@@ -23,20 +23,26 @@ import java.nio.file.Paths
  * @author Oleg Kandaurov
  * @since 21.10.2019
  */
-class ArtifactPublishPlugin : Plugin<Project> {
+class JavaArtifactPublishPlugin : Plugin<Project> {
 
     companion object {
-        private val log: Logger = Logging.getLogger(ArtifactPublishPlugin::class.java)
+        private val log: Logger = Logging.getLogger(JavaArtifactPublishPlugin::class.java)
+        /**
+         * Имя блока с настройками
+         */
+        val EXTENSION_NAME: String = "javaArtifactPublishSettings"
     }
 
     override fun apply(project: Project) {
         project.pluginManager.apply(MavenPublishPlugin::class.java)
-        val extension = project.extensions.findByType(ArtifactPublishExtension::class.java)
+        // Пытаемся получить зарегистрированный extension для случая когда настройки
+        // данного плагина необходимо выставить в соседнем блоке afterEvaluate
+        val extension = project.extensions.findByType(JavaArtifactPublishExtension::class.java)
         if (extension == null) {
-            project.extensions.create("artifactPublish", ArtifactPublishExtension::class.java)
+            project.extensions.create(EXTENSION_NAME, JavaArtifactPublishExtension::class.java)
         }
         project.afterEvaluate { target ->
-            val artifactPublishExtension = project.extensions.getByType(ArtifactPublishExtension::class.java)
+            val artifactPublishExtension = project.extensions.getByType(JavaArtifactPublishExtension::class.java)
             configureJavadoc(target)
             configurePublishing(target, artifactPublishExtension)
             configureStoreVersion(target, artifactPublishExtension)
@@ -68,14 +74,14 @@ class ArtifactPublishPlugin : Plugin<Project> {
         }
     }
 
-    private fun configurePublishing(project: Project, artifactPublishExtension: ArtifactPublishExtension) {
+    private fun configurePublishing(project: Project, javaArtifactPublishExtension: JavaArtifactPublishExtension) {
         val publishingExtension = project.extensions.getByType(PublishingExtension::class.java)
 
         publishingExtension.publications { publicationContainer ->
             val mavenJava = publicationContainer.maybeCreate("mavenJava", MavenPublication::class.java)
-            mavenJava.groupId = artifactPublishExtension.groupId
-            mavenJava.artifactId = artifactPublishExtension.artifactId
-            mavenJava.from(getPublishingComponent(project, artifactPublishExtension))
+            mavenJava.groupId = javaArtifactPublishExtension.groupId
+            mavenJava.artifactId = javaArtifactPublishExtension.artifactId
+            mavenJava.from(getPublishingComponent(project, javaArtifactPublishExtension))
             mavenJava.artifact(project.tasks.getByName("sourcesJar"))
             mavenJava.artifact(project.tasks.getByName("javadocJar"))
         }
@@ -88,26 +94,26 @@ class ArtifactPublishPlugin : Plugin<Project> {
                 }
 
                 repository.credentials { passwordCredentials ->
-                    passwordCredentials.username = artifactPublishExtension.nexusUser
-                    passwordCredentials.password = artifactPublishExtension.nexusPassword
+                    passwordCredentials.username = javaArtifactPublishExtension.nexusUser
+                    passwordCredentials.password = javaArtifactPublishExtension.nexusPassword
                 }
             }
         }
         project.tasks.withType(PublishToMavenRepository::class.java).forEach { task -> task.dependsOn("jar", "test") }
     }
 
-    private fun configureStoreVersion(project: Project, artifactPublishExtension: ArtifactPublishExtension) {
-        storeVersion(project, artifactPublishExtension)
+    private fun configureStoreVersion(project: Project, javaArtifactPublishExtension: JavaArtifactPublishExtension) {
+        storeVersion(project, javaArtifactPublishExtension)
         project.tasks.getByName("publish").finalizedBy("storeVersion")
     }
 
-    private fun storeVersion(project: Project, artifactPublishExtension: ArtifactPublishExtension) {
+    private fun storeVersion(project: Project, javaArtifactPublishExtension: JavaArtifactPublishExtension) {
         val storeVersion = project.tasks.create("storeVersion")
         storeVersion.description = "Generates file, which contains information about build version"
         storeVersion.doLast { task ->
             val version = String.format("%s:%s:%s",
-                    artifactPublishExtension.groupId,
-                    artifactPublishExtension.artifactId,
+                    javaArtifactPublishExtension.groupId,
+                    javaArtifactPublishExtension.artifactId,
                     project.version)
             storeVersionToFile(project.buildDir.absolutePath, version)
         }
@@ -125,10 +131,10 @@ class ArtifactPublishPlugin : Plugin<Project> {
 
     private fun getPublishingComponent(
         project: Project,
-        artifactPublishExtension: ArtifactPublishExtension
+        javaArtifactPublishExtension: JavaArtifactPublishExtension
     ): SoftwareComponent? {
-        return if (artifactPublishExtension.publishingComponent == null) {
+        return if (javaArtifactPublishExtension.publishingComponent == null) {
             project.components.getByName("java")
-        } else artifactPublishExtension.publishingComponent
+        } else javaArtifactPublishExtension.publishingComponent
     }
 }

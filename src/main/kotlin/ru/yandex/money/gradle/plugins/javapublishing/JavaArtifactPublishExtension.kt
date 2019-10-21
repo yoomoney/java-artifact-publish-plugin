@@ -1,4 +1,4 @@
-package ru.yandex.money.gradle.plugins.publishing
+package ru.yandex.money.gradle.plugins.javapublishing
 
 import org.gradle.api.component.SoftwareComponent
 
@@ -8,7 +8,7 @@ import org.gradle.api.component.SoftwareComponent
  * @author Oleg Kandaurov
  * @since 21.10.2019
  */
-open class ArtifactPublishExtension {
+open class JavaArtifactPublishExtension {
 
     /**
      * Имя пользователя для отгрузки в Nexus
