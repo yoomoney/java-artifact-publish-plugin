@@ -31,7 +31,10 @@ class ArtifactPublishPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.pluginManager.apply(MavenPublishPlugin::class.java)
-        project.extensions.create("artifactPublish", ArtifactPublishExtension::class.java)
+        val extension = project.extensions.findByType(ArtifactPublishExtension::class.java)
+        if (extension == null) {
+            project.extensions.create("artifactPublish", ArtifactPublishExtension::class.java)
+        }
         project.afterEvaluate { target ->
             val artifactPublishExtension = project.extensions.getByType(ArtifactPublishExtension::class.java)
             configureJavadoc(target)
