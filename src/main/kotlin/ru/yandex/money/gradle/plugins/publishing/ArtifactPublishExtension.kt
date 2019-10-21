@@ -8,7 +8,7 @@ import org.gradle.api.component.SoftwareComponent
  * @author Oleg Kandaurov
  * @since 21.10.2019
  */
-class ArtifactPublishExtension {
+open class ArtifactPublishExtension {
 
     /**
      * Имя пользователя для отгрузки в Nexus
