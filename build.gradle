@@ -1,0 +1,22 @@
+buildscript {
+    apply from: 'project.gradle', to: buildscript
+}
+apply plugin: 'yamoney-gradle-project-plugin'
+apply plugin: 'yamoney-kotlin-module-plugin'
+
+pluginId = 'yamoney-java-artifact-publish-plugin'
+gradlePlugin {
+    plugins {
+        artifactPublishPlugin {
+            id = pluginId
+            implementationClass = "ru.yandex.money.gradle.plugins.javapublishing.JavaArtifactPublishPlugin"
+        }
+    }
+}
+
+dependencies {
+    compile localGroovy()
+
+    testCompile gradleTestKit(),
+            'com.netflix.nebula:nebula-test:7.1.0'
+} 
