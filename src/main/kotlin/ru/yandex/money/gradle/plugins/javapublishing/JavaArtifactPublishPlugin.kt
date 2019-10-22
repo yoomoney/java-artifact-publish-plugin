@@ -4,8 +4,6 @@ import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.component.SoftwareComponent
-import org.gradle.api.logging.Logger
-import org.gradle.api.logging.Logging
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
@@ -26,11 +24,10 @@ import java.nio.file.Paths
 class JavaArtifactPublishPlugin : Plugin<Project> {
 
     companion object {
-        private val log: Logger = Logging.getLogger(JavaArtifactPublishPlugin::class.java)
         /**
          * Имя блока с настройками
          */
-        val EXTENSION_NAME: String = "javaArtifactPublishSettings"
+        val extensionName: String = "javaArtifactPublishSettings"
     }
 
     override fun apply(project: Project) {
@@ -39,7 +36,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         // данного плагина необходимо выставить в соседнем блоке afterEvaluate
         val extension = project.extensions.findByType(JavaArtifactPublishExtension::class.java)
         if (extension == null) {
-            project.extensions.create(EXTENSION_NAME, JavaArtifactPublishExtension::class.java)
+            project.extensions.create(extensionName, JavaArtifactPublishExtension::class.java)
         }
         project.afterEvaluate { target ->
             val artifactPublishExtension = project.extensions.getByType(JavaArtifactPublishExtension::class.java)
@@ -115,17 +112,17 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
                     javaArtifactPublishExtension.groupId,
                     javaArtifactPublishExtension.artifactId,
                     project.version)
-            storeVersionToFile(project.buildDir.absolutePath, version)
+            storeVersionToFile(project, project.buildDir.absolutePath, version)
         }
     }
 
-    private fun storeVersionToFile(versionDir: String, content: String) {
+    private fun storeVersionToFile(project: Project, versionDir: String, content: String) {
         try {
             val versionFile = Paths.get(versionDir, "version.txt")
             ResourceGroovyMethods.write(versionFile.toFile(), content)
-            log.lifecycle("File with version generated successfully into $versionFile")
+            project.logger.lifecycle("File with version generated successfully into $versionFile")
         } catch (e: IOException) {
-            log.lifecycle("Error occurred during storing version", e)
+            project.logger.lifecycle("Error occurred during storing version", e)
         }
     }
 
