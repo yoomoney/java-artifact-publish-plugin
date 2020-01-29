@@ -27,7 +27,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         /**
          * Имя блока с настройками
          */
-        val extensionName: String = "javaArtifactPublishSettings"
+        const val extensionName: String = "javaArtifactPublishSettings"
     }
 
     override fun apply(project: Project) {
@@ -61,12 +61,12 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             sourceSet.filter.include("**/*.java", "**/*.kt", "**/*.kts")
 
             sourcesJar.from(sourceSet)
-            sourcesJar.classifier = "sources"
+            sourcesJar.archiveClassifier.set("sources")
         }
 
         project.tasks.create("javadocJar", Jar::class.java) { javadocJar ->
             javadocJar.dependsOn("javadoc")
-            javadocJar.classifier = "javadoc"
+            javadocJar.archiveClassifier.set("javadoc")
             javadocJar.from(javadoc.destinationDir!!)
         }
     }
@@ -107,7 +107,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
     private fun storeVersion(project: Project, javaArtifactPublishExtension: JavaArtifactPublishExtension) {
         val storeVersion = project.tasks.create("storeVersion")
         storeVersion.description = "Generates file, which contains information about build version"
-        storeVersion.doLast { task ->
+        storeVersion.doLast { _ ->
             val version = String.format("%s:%s:%s",
                     javaArtifactPublishExtension.groupId,
                     javaArtifactPublishExtension.artifactId,

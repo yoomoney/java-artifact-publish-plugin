@@ -15,8 +15,8 @@ gradlePlugin {
 }
 
 dependencies {
-    compile localGroovy()
+    implementation localGroovy()
 
-    testCompile gradleTestKit(),
-            'com.netflix.nebula:nebula-test:7.1.0'
-} 
+    testImplementation gradleTestKit(),
+            'com.netflix.nebula:nebula-test:7.6.0'
+}
