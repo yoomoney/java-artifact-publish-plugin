@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.2.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-artifact-publish-plugin/pull-requests/1) (03-07-2020)
+
 * Поднята версия gradle: 6.0.1 -> 6.4.1.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.1.0]() (05-02-2020)
 
 * Сборка на java 11
