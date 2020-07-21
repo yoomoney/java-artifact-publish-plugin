@@ -30,4 +30,12 @@ open class JavaArtifactPublishExtension {
      * Вид отгружаемого артефакта
      */
     var publishingComponent: SoftwareComponent? = null
+    /**
+     * Репозиторий, в который загружать snapshot версии
+     */
+    var snapshotRepository: String = "https://nexus.yamoney.ru/repository/snapshots/"
+    /**
+     * Репозиторий, в который загружать release версии
+     */
+    var releaseRepository: String = "https://nexus.yamoney.ru/repository/release/"
 }

@@ -33,6 +33,10 @@ javaArtifactPublishSettings {
     artifactId = 'ru.yandex.money.common'
     // Вид публикуемого артефакта, необязательный параметр.
     publishingComponent = components.java
+    // Репозиторий, в который загружать snapshot версии, необязательный параметр.
+    snapshotRepository = "https://nexus.yamoney.ru/repository/snapshots/"            //значение по умолчанию
+    // Репозиторий, в который загружать release версии, необязательный параметр.
+    releaseRepository = "https://nexus.yamoney.ru/repository/release/"              //значение по умолчанию
 }
 ```
 
