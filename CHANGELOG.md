@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [2.3.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-artifact-publish-plugin/pull-requests/2) (06-08-2020)
 
 * Добавлены настройки snapshotRepository и releaseRepository - для указания адресов репозиториев.
