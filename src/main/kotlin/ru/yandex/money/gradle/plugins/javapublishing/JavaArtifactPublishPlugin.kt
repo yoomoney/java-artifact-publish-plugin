@@ -85,9 +85,9 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         publishingExtension.repositories { artifactRepositories ->
             artifactRepositories.maven { repository ->
                 if (project.version.toString().endsWith("-SNAPSHOT")) {
-                    repository.url = URI.create("https://nexus.yamoney.ru/repository/snapshots/")
+                    repository.url = URI.create(javaArtifactPublishExtension.snapshotRepository)
                 } else {
-                    repository.url = URI.create("https://nexus.yamoney.ru/repository/releases/")
+                    repository.url = URI.create(javaArtifactPublishExtension.releaseRepository)
                 }
 
                 repository.credentials { passwordCredentials ->
