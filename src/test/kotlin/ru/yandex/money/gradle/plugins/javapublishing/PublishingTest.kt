@@ -15,7 +15,7 @@ class PublishingTest : AbstractReleaseTest() {
             artifactId = "test_artifact_id"
             groupId = "test_group_id"
             snapshotRepository = "https://nexus.yamoney.ru/repository/snapshots/"
-            releaseRepository = "https://nexus.yamoney.ru/repository/release/"
+            releaseRepository = "https://nexus.yamoney.ru/repository/releases/"
         }
         """)
         runTasksSuccessfully("build", "pTML", "--info")
