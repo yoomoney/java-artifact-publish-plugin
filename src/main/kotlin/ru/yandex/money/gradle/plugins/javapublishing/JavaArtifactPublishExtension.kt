@@ -37,5 +37,5 @@ open class JavaArtifactPublishExtension {
     /**
      * Репозиторий, в который загружать release версии
      */
-    var releaseRepository: String = "https://nexus.yamoney.ru/repository/release/"
+    var releaseRepository: String = "https://nexus.yamoney.ru/repository/releases/"
 }
