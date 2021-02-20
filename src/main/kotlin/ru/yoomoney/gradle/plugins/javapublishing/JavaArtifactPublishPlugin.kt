@@ -1,4 +1,4 @@
-package ru.yandex.money.gradle.plugins.javapublishing
+package ru.yoomoney.gradle.plugins.javapublishing
 
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin

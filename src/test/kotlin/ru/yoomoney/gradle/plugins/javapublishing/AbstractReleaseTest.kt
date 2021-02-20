@@ -1,4 +1,4 @@
-package ru.yandex.money.gradle.plugins.javapublishing
+package ru.yoomoney.gradle.plugins.javapublishing
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
@@ -23,7 +23,7 @@ abstract class AbstractReleaseTest {
         buildFile.writeText("""
             plugins {
                 id 'java'
-                id 'yamoney-java-artifact-publish-plugin'
+                id 'ru.yoomoney.gradle.plugins.java-artifact-publish-plugin'
             }
 
         """.trimIndent())

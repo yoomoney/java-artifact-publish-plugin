@@ -1,4 +1,4 @@
-package ru.yandex.money.gradle.plugins.javapublishing
+package ru.yoomoney.gradle.plugins.javapublishing
 
 import org.gradle.api.component.SoftwareComponent
 
@@ -33,9 +33,9 @@ open class JavaArtifactPublishExtension {
     /**
      * Репозиторий, в который загружать snapshot версии
      */
-    var snapshotRepository: String = "https://nexus.yamoney.ru/repository/snapshots/"
+    var snapshotRepository: String? = null
     /**
      * Репозиторий, в который загружать release версии
      */
-    var releaseRepository: String = "https://nexus.yamoney.ru/repository/releases/"
+    var releaseRepository: String? = null
 }

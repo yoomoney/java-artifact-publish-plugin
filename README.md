@@ -2,20 +2,18 @@
 Плагин реализует и настраивает функционал публикации артефакта.
 
 ## Подключение
-Для подключения в проект этого плагина, нужно добавить файл ```project.gradle```:
-```groovy
-repositories {
-    dependencies {
-        classpath 'ru.yandex.money.gradle.plugins:yamoney-java-artifact-publish-plugin:1.0.0'
-    }
-}
-```
-А в `build.gradle` добавить соответствующую секцию, чтобы конфигурационный файл выглядел подобным образом:
+Для подключения добавьте в build.gradle:
 ```groovy
 buildscript {
-    apply from: 'project.gradle', to: buildscript
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'ru.yoomoney.gradle.plugins:java-artifact-publish-plugin:4.+'
+    }
 }
-apply plugin: 'yamoney-java-artifact-publish-plugin'
+apply plugin: 'ru.yoomoney.gradle.plugins.java-artifact-publish-plugin'
+
 ```
 
 ## Конфигурация
@@ -28,15 +26,15 @@ javaArtifactPublishSettings {
     // Пароль пользователя для отгрузки в Nexus, обязательный параметр.
     nexusPassword = System.getenv("NEXUS_PASSWORD")
     // Группа отгружаемого артефакта, обязательный параметр.
-    groupId = 'ru.yandex.money.common'
+    groupId = 'ru.yoomoney.common'
     // Имя отгружаемого артефакта, обязательный параметр.
-    artifactId = 'ru.yandex.money.common'
+    artifactId = 'artifact'
     // Вид публикуемого артефакта, необязательный параметр.
     publishingComponent = components.java
-    // Репозиторий, в который загружать snapshot версии, необязательный параметр.
-    snapshotRepository = "https://nexus.yamoney.ru/repository/snapshots/"            //значение по умолчанию
-    // Репозиторий, в который загружать release версии, необязательный параметр.
-    releaseRepository = "https://nexus.yamoney.ru/repository/release/"              //значение по умолчанию
+    // Репозиторий, в который загружать snapshot версии, обязательный параметр.
+    snapshotRepository = "https://yoomoney/repository/snapshots/"
+    // Репозиторий, в который загружать release версии, обязательный параметр.
+    releaseRepository = "https://yoomoney/repository/release/"
 }
 ```
 
