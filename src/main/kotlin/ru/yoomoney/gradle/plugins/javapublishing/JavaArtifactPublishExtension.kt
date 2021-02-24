@@ -38,4 +38,8 @@ open class JavaArtifactPublishExtension {
      * Репозиторий, в который загружать release версии
      */
     var releaseRepository: String? = null
+    /**
+     * Нужно ли подписывать артефакт при публикации
+     */
+    var signing: Boolean = false
 }

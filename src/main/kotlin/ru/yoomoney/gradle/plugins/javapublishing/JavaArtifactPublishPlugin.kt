@@ -11,6 +11,8 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
+import org.gradle.plugins.signing.SigningExtension
+import org.gradle.plugins.signing.SigningPlugin
 import java.io.IOException
 import java.net.URI
 import java.nio.file.Paths
@@ -23,13 +25,6 @@ import java.nio.file.Paths
  */
 class JavaArtifactPublishPlugin : Plugin<Project> {
 
-    companion object {
-        /**
-         * Имя блока с настройками
-         */
-        const val extensionName: String = "javaArtifactPublishSettings"
-    }
-
     override fun apply(project: Project) {
         project.pluginManager.apply(MavenPublishPlugin::class.java)
         // Пытаемся получить зарегистрированный extension для случая когда настройки
@@ -38,10 +33,16 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         if (extension == null) {
             project.extensions.create(extensionName, JavaArtifactPublishExtension::class.java)
         }
+        val publishingExtension = project.extensions.getByType(PublishingExtension::class.java)
+        publishingExtension.publications.create(publicationName, MavenPublication::class.java)
+
         project.afterEvaluate { target ->
             val artifactPublishExtension = project.extensions.getByType(JavaArtifactPublishExtension::class.java)
             configureJavadoc(target)
             configurePublishing(target, artifactPublishExtension)
+            if (artifactPublishExtension.signing) {
+                signing(target)
+            }
             configureStoreVersion(target, artifactPublishExtension)
         }
     }
@@ -75,19 +76,19 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         val publishingExtension = project.extensions.getByType(PublishingExtension::class.java)
 
         publishingExtension.publications { publicationContainer ->
-            val mavenJava = publicationContainer.maybeCreate("mavenJava", MavenPublication::class.java)
-            mavenJava.groupId = javaArtifactPublishExtension.groupId
-            mavenJava.artifactId = javaArtifactPublishExtension.artifactId
-            mavenJava.from(getPublishingComponent(project, javaArtifactPublishExtension))
-            mavenJava.artifact(project.tasks.getByName("sourcesJar"))
-            mavenJava.artifact(project.tasks.getByName("javadocJar"))
+            val mavenPublication = publicationContainer.maybeCreate(publicationName, MavenPublication::class.java)
+            mavenPublication.groupId = javaArtifactPublishExtension.groupId
+            mavenPublication.artifactId = javaArtifactPublishExtension.artifactId
+            mavenPublication.from(getPublishingComponent(project, javaArtifactPublishExtension))
+            mavenPublication.artifact(project.tasks.getByName("sourcesJar"))
+            mavenPublication.artifact(project.tasks.getByName("javadocJar"))
         }
         publishingExtension.repositories { artifactRepositories ->
             artifactRepositories.maven { repository ->
                 if (project.version.toString().endsWith("-SNAPSHOT")) {
-                    repository.url = URI.create(javaArtifactPublishExtension.snapshotRepository)
+                    repository.url = URI.create(javaArtifactPublishExtension.snapshotRepository!!)
                 } else {
-                    repository.url = URI.create(javaArtifactPublishExtension.releaseRepository)
+                    repository.url = URI.create(javaArtifactPublishExtension.releaseRepository!!)
                 }
 
                 repository.credentials { passwordCredentials ->
@@ -97,6 +98,22 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             }
         }
         project.tasks.withType(PublishToMavenRepository::class.java).forEach { task -> task.dependsOn("jar", "test") }
+    }
+
+    private fun signing(target: Project) {
+        target.pluginManager.apply(SigningPlugin::class.java)
+
+        val signingExtension = target.extensions.getByType(SigningExtension::class.java)
+
+        //стандартные properties, которые создает signing плагин.
+        // значения берутся из ORG_GRADLE_PROJECT_signingKey и ORG_GRADLE_PROJECT_signingPassword
+        val signingKey = target.property("signingKey") as String?
+        val signingPassword = target.property("signingPassword") as String?
+        signingExtension.useInMemoryPgpKeys(signingKey, signingPassword)
+
+        val publishingExtension = target.extensions.getByType(PublishingExtension::class.java)
+        val mavenPublication = publishingExtension.publications.getByName(publicationName) as MavenPublication
+        signingExtension.sign(mavenPublication)
     }
 
     private fun configureStoreVersion(project: Project, javaArtifactPublishExtension: JavaArtifactPublishExtension) {
@@ -133,5 +150,16 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         return if (javaArtifactPublishExtension.publishingComponent == null) {
             project.components.getByName("java")
         } else javaArtifactPublishExtension.publishingComponent
+    }
+
+    companion object {
+        /**
+         * Имя блока с настройками
+         */
+        const val extensionName: String = "javaArtifactPublishSettings"
+        /**
+         * Имя создаваемой публикации
+         */
+        private const val publicationName: String = "mainArtifact"
     }
 }
