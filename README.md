@@ -60,5 +60,25 @@ javaArtifactPublishSettings {
     releaseRepository = "https://yoomoney/repository/release/"
     // Нужно ли подписывать артефакт при публикации, необязательный параметр.
     signing = false //значение по умолчанию
+
+    //добавление дополнительной информации в pom проекта.
+    //по умолчанию дополнительная информация не добавляется (addInfo=false).
+    publicationAdditionalInfo {
+        addInfo = true
+        organizationUrl = "https://github.com/yoomoney-gradle-plugins"
+        license {
+            name = "MIT License"
+            url = "http://www.opensource.org/licenses/mit-license.php"
+        }
+        developers {
+            developer {
+                name = 'Ivan'
+                email = 'ivan@test.ru'
+                organization = 'test'
+                organizationUrl = 'https://test.ru'
+            }
+        }
+        description = "description"
+    }
 }
 ```

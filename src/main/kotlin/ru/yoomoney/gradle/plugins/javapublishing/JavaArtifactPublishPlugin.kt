@@ -74,6 +74,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
 
     private fun configurePublishing(project: Project, javaArtifactPublishExtension: JavaArtifactPublishExtension) {
         val publishingExtension = project.extensions.getByType(PublishingExtension::class.java)
+        val publicationAdditionalInfo = javaArtifactPublishExtension.publicationAdditionalInfo
 
         publishingExtension.publications { publicationContainer ->
             val mavenPublication = publicationContainer.maybeCreate(publicationName, MavenPublication::class.java)
@@ -82,7 +83,12 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             mavenPublication.from(getPublishingComponent(project, javaArtifactPublishExtension))
             mavenPublication.artifact(project.tasks.getByName("sourcesJar"))
             mavenPublication.artifact(project.tasks.getByName("javadocJar"))
+
+            if (publicationAdditionalInfo.addInfo) {
+                addAdditionalInfo(javaArtifactPublishExtension.artifactId!!, publicationAdditionalInfo, mavenPublication)
+            }
         }
+
         publishingExtension.repositories { artifactRepositories ->
             artifactRepositories.maven { repository ->
                 if (project.version.toString().endsWith("-SNAPSHOT")) {
@@ -152,11 +158,82 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         } else javaArtifactPublishExtension.publishingComponent
     }
 
+    private fun addAdditionalInfo(artifactId: String,
+                                  additionalInfo: PublicationAdditionalInfo,
+                                  mavenPublication: MavenPublication) {
+
+        val host = URI(additionalInfo.organizationUrl!!).host
+        val organizationId = URI(additionalInfo.organizationUrl!!).path.replace("/", "")
+
+        mavenPublication.pom { pomInfo ->
+            pomInfo.description.set(additionalInfo.description!!)
+            pomInfo.packaging = "jar"
+            pomInfo.name.set(artifactId)
+            pomInfo.url.set(getPublicationUrl(host, organizationId, artifactId))
+            pomInfo.licenses { pomLicenseSpec ->
+                pomLicenseSpec.license { license ->
+                    additionalInfo.license?.also {
+                        it.name?.also {
+                            license.name.set(it)
+                        }
+                        it.url?.also {
+                            license.url.set(it)
+                        }
+                    }
+                }
+            }
+
+            pomInfo.developers { pomDeveloperSpec ->
+                additionalInfo.developers!!.forEach {
+                    pomDeveloperSpec.developer { developer ->
+                        it.email?.also {
+                            developer.email.set(it)
+                        }
+                        it.name?.also {
+                            developer.name.set(it)
+                        }
+                        it.organization?.also {
+                            developer.organization.set(it)
+                        }
+                        it.organizationUrl?.also {
+                            developer.organizationUrl.set(it)
+                        }
+                    }
+                }
+            }
+
+            pomInfo.scm { mavenPomScm ->
+                mavenPomScm.connection.set(getScmConnectionUrl(host, organizationId, artifactId))
+                mavenPomScm.developerConnection.set(getScmDeveloperConnectionUrl(host, organizationId, artifactId))
+                mavenPomScm.url.set((getScmUrl(host, organizationId, artifactId)))
+            }
+
+            pomInfo.description
+        }
+    }
+
+    private fun getScmConnectionUrl(baseUrl: String, organizationId: String, artifactId: String): String {
+        return "scm:git:git://$baseUrl/$organizationId/$artifactId.git"
+    }
+
+    private fun getScmDeveloperConnectionUrl(baseUrl: String, organizationId: String, artifactId: String): String {
+        return "scm:git:ssh://$baseUrl:$organizationId/$artifactId.git"
+    }
+
+    private fun getScmUrl(baseUrl: String, organizationId: String, artifactId: String): String {
+        return "https://$baseUrl/$organizationId/$artifactId/tree/master"
+    }
+
+    private fun getPublicationUrl(baseUrl: String, organizationId: String, artifactId: String): String {
+        return "https://$baseUrl/$organizationId/$artifactId"
+    }
+
     companion object {
         /**
          * Имя блока с настройками
          */
         const val extensionName: String = "javaArtifactPublishSettings"
+
         /**
          * Имя создаваемой публикации
          */

@@ -1,6 +1,8 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
+import groovy.lang.Closure
 import org.gradle.api.component.SoftwareComponent
+import org.gradle.util.ConfigureUtil
 
 /**
  * Конфигурация плагина публикации
@@ -42,4 +44,21 @@ open class JavaArtifactPublishExtension {
      * Нужно ли подписывать артефакт при публикации
      */
     var signing: Boolean = false
+
+    /**
+     * Настройки дополнительной информацией о публикуемом артефакте. Информация добавляется в pom.
+     */
+    var publicationAdditionalInfo = PublicationAdditionalInfo()
+
+    fun publicationAdditionalInfo(closure: Closure<*>) {
+        val action = ConfigureUtil.configureUsing<PublicationAdditionalInfo>(closure)
+        val publicationInfo = PublicationAdditionalInfo()
+        action.execute(publicationInfo)
+
+        publicationAdditionalInfo(publicationInfo)
+    }
+
+    fun publicationAdditionalInfo(publicationInfo: PublicationAdditionalInfo) {
+        publicationAdditionalInfo = publicationInfo
+    }
 }
