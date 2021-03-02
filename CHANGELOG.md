@@ -1,14 +1,14 @@
-### NEXT_VERSION_TYPE=MAJOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [3.0.0](https://api.github.com/repos/yoomoney-gradle-plugins/java-artifact-publish-plugin/pulls/1) (02-03-2021)
+
 * Внесены изменения в связи с переходом на git-hub:
-    * Переименованы пакеты
-    * Плагин собирается без использования project-plugin, сборка полностью описывается в build.gradle
-    * Подключен artifact-release-plugin для автоматического выпуска релиза.
-    * Сборка переведена на travis (ранее использовался jenkins)
-    * ***breaking_changes*** параметры snapshotRepository и releaseRepository больше не содержат значений по-умолчанию, 
-      теперь они обязательны для заполнения.
+* Переименованы пакеты
+* Плагин собирается без использования project-plugin, сборка полностью описывается в build.gradle
+* Подключен artifact-release-plugin для автоматического выпуска релиза.
+* Сборка переведена на travis (ранее использовался jenkins)
+* ***breaking_changes*** параметры snapshotRepository и releaseRepository больше не содержат значений по-умолчанию,
+теперь они обязательны для заполнения.
 * Добавлена возможность подписи артефакта для публикации в maven-central.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.4.0]() (12-02-2021)
 
 * Переименование yamoney-kotlin-module-plugin в ru.yoomoney.gradle.plugins.kotlin-plugin
