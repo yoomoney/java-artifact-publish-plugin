@@ -40,7 +40,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             val artifactPublishExtension = project.extensions.getByType(JavaArtifactPublishExtension::class.java)
             configureJavadoc(target)
             configurePublishing(target, artifactPublishExtension)
-            if (artifactPublishExtension.signing) {
+            if (artifactPublishExtension.signing && !project.isSnapshot()) {
                 signing(target)
             }
             configureStoreVersion(target, artifactPublishExtension)
@@ -91,7 +91,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
 
         publishingExtension.repositories { artifactRepositories ->
             artifactRepositories.maven { repository ->
-                if (project.version.toString().endsWith("-SNAPSHOT")) {
+                if (project.isSnapshot()) {
                     repository.url = URI.create(javaArtifactPublishExtension.snapshotRepository!!)
                 } else {
                     repository.url = URI.create(javaArtifactPublishExtension.releaseRepository!!)
@@ -105,6 +105,8 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         }
         project.tasks.withType(PublishToMavenRepository::class.java).forEach { task -> task.dependsOn("jar", "test") }
     }
+
+    private fun Project.isSnapshot() = project.version.toString().endsWith("-SNAPSHOT")
 
     private fun signing(target: Project) {
         target.pluginManager.apply(SigningPlugin::class.java)

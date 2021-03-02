@@ -37,7 +37,8 @@ javaArtifactPublishSettings {
 * `ORG_GRADLE_PROJECT_signingKey` - значение ключа в ascii-armored формате  
 * `ORG_GRADLE_PROJECT_signingPassword` - passphrase ключа  
   
-Для подписи артефакта используется стандартный плагин [signing](https://docs.gradle.org/current/userguide/signing_plugin.html).
+Для подписи артефакта используется стандартный плагин [signing](https://docs.gradle.org/current/userguide/signing_plugin.html).  
+Подписаны будут только релизные версии артефактов, т.к. для загрузки snapshot версий подпись не нужна.
 
 ## Конфигурация
 
