@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [3.0.1](https://api.github.com/repos/yoomoney-gradle-plugins/java-artifact-publish-plugin/pulls/2) (02-03-2021)
+
 * Теперь подпись артефактов осуществляется только для релизных версий, т.к. для выгрузки snapshot подпись не нужна.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [3.0.0](https://api.github.com/repos/yoomoney-gradle-plugins/java-artifact-publish-plugin/pulls/1) (02-03-2021)
 
 * Внесены изменения в связи с переходом на git-hub:
