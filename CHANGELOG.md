@@ -1,23 +1,31 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MAJOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Внесены изменения в связи с переходом на git-hub:
+    * Переименованы пакеты
+    * Плагин собирается без использования project-plugin, сборка полностью описывается в build.gradle
+    * Подключен artifact-release-plugin для автоматического выпуска релиза.
+    * Сборка переведена на travis (ранее использовался jenkins)
+    * ***breaking_changes*** параметры snapshotRepository и releaseRepository больше не содержат значений по-умолчанию, 
+      теперь они обязательны для заполнения.
+* Добавлена возможность подписи артефакта для публикации в maven-central.
 ### NEXT_VERSION_DESCRIPTION_END
-## [2.4.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-artifact-publish-plugin/pull-requests/5) (12-02-2021)
+## [2.4.0]() (12-02-2021)
 
 * Переименование yamoney-kotlin-module-plugin в ru.yoomoney.gradle.plugins.kotlin-plugin
 
-## [2.3.2](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-artifact-publish-plugin/pull-requests/4) (30-11-2020)
+## [2.3.2]() (30-11-2020)
 
 * Обновлена версия kotlin 1.3.71 -> 1.3.50
 
-## [2.3.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-artifact-publish-plugin/pull-requests/3) (23-11-2020)
+## [2.3.1]() (23-11-2020)
 
 * Поправлен url для `releaseRepository` в `JavaArtifactPublishExtension`
 
-## [2.3.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-artifact-publish-plugin/pull-requests/2) (06-08-2020)
+## [2.3.0]() (06-08-2020)
 
 * Добавлены настройки snapshotRepository и releaseRepository - для указания адресов репозиториев.
 
-## [2.2.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-artifact-publish-plugin/pull-requests/1) (03-07-2020)
+## [2.2.0]() (03-07-2020)
 
 * Поднята версия gradle: 6.0.1 -> 6.4.1.
 

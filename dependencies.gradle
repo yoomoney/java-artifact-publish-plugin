@@ -1,0 +1,6 @@
+dependencies {
+    implementation localGroovy()
+
+    testImplementation gradleTestKit(),
+            'com.netflix.nebula:nebula-test:7.6.0'
+}

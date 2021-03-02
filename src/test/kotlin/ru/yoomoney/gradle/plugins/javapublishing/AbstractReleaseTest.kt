@@ -1,4 +1,4 @@
-package ru.yandex.money.gradle.plugins.javapublishing
+package ru.yoomoney.gradle.plugins.javapublishing
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
@@ -23,7 +23,7 @@ abstract class AbstractReleaseTest {
         buildFile.writeText("""
             plugins {
                 id 'java'
-                id 'yamoney-java-artifact-publish-plugin'
+                id 'ru.yoomoney.gradle.plugins.java-artifact-publish-plugin'
             }
 
         """.trimIndent())
@@ -34,8 +34,11 @@ abstract class AbstractReleaseTest {
             public class HelloWorld {}
         """.trimIndent())
 
+        val key = File(javaClass.getResource("test_gpg_key.txt").toURI()).readText()
         gradleProperties = projectDir.newFile("gradle.properties")
-        gradleProperties.writeText("version=1.0.0-SNAPSHOT")
+        gradleProperties.writeText("version=1.0.0-SNAPSHOT\n" +
+                "signingPassword=123456\n" +
+                "signingKey=$key")
     }
 
     fun runTasksSuccessfully(vararg tasks: String): BuildResult {
