@@ -239,6 +239,6 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         /**
          * Имя создаваемой публикации
          */
-        private const val publicationName: String = "mainArtifact"
+        const val publicationName: String = "mainArtifact"
     }
 }

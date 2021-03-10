@@ -18,6 +18,7 @@ apply plugin: 'ru.yoomoney.gradle.plugins.java-artifact-publish-plugin'
 
 # Использование
 
+Плагин создает publication с именем "mainArtifact".
 Плагин публикует заданный артефакт при помощи таски `publishMainArtifactPublicationToMavenRepository`.
 Также публикация будет осуществлена при вызове общей таски `publish`, наряду с другими существующими в проекте публикациями.
 Результатом вызовом вышеназванной таски будет отгрузка артефакта в Nexus в репозиторий
