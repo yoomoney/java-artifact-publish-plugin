@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Имя публикации сделано публичным для возможности использования в местах подключения.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [3.0.1](https://api.github.com/repos/yoomoney-gradle-plugins/java-artifact-publish-plugin/pulls/2) (02-03-2021)
 
