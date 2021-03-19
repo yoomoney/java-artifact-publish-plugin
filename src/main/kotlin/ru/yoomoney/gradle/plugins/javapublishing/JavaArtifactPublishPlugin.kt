@@ -1,5 +1,6 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -141,6 +142,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         }
     }
 
+    @SuppressFBWarnings("PATH_TRAVERSAL_IN")
     private fun storeVersionToFile(project: Project, versionDir: String, content: String) {
         try {
             val versionFile = Paths.get(versionDir, "version.txt")
