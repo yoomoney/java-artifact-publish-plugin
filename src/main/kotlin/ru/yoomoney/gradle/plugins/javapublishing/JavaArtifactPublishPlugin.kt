@@ -1,5 +1,6 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -113,7 +114,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
 
         val signingExtension = target.extensions.getByType(SigningExtension::class.java)
 
-        //стандартные properties, которые создает signing плагин.
+        // стандартные properties, которые создает signing плагин.
         // значения берутся из ORG_GRADLE_PROJECT_signingKey и ORG_GRADLE_PROJECT_signingPassword
         val signingKey = target.property("signingKey") as String?
         val signingPassword = target.property("signingPassword") as String?
@@ -141,6 +142,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         }
     }
 
+    @SuppressFBWarnings("PATH_TRAVERSAL_IN")
     private fun storeVersionToFile(project: Project, versionDir: String, content: String) {
         try {
             val versionFile = Paths.get(versionDir, "version.txt")
@@ -160,10 +162,11 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         } else javaArtifactPublishExtension.publishingComponent
     }
 
-    private fun addAdditionalInfo(artifactId: String,
-                                  additionalInfo: PublicationAdditionalInfo,
-                                  mavenPublication: MavenPublication) {
-
+    private fun addAdditionalInfo(
+        artifactId: String,
+        additionalInfo: PublicationAdditionalInfo,
+        mavenPublication: MavenPublication
+    ) {
         val host = URI(additionalInfo.organizationUrl!!).host
         val organizationId = URI(additionalInfo.organizationUrl!!).path.replace("/", "")
 

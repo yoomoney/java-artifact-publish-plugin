@@ -24,7 +24,6 @@ class PublishingTest : AbstractReleaseTest() {
         """)
         val result = runTasksSuccessfully("build", "pTML", "--info")
         MatcherAssert.assertThat(result.output, CoreMatchers.not(CoreMatchers.containsString("signMainArtifactPublication")))
-
     }
 
     @Test
@@ -94,8 +93,8 @@ class PublishingTest : AbstractReleaseTest() {
                 .containsString("<url>https://github.com/yoomoney-gradle-plugins/test_artifact_id</url>"))
         MatcherAssert.assertThat(pom, CoreMatchers.containsString("<email>ivan@test.ru</email>"))
         MatcherAssert.assertThat(pom, CoreMatchers.containsString("<name>Petr</name>"))
-        MatcherAssert.assertThat(pom, CoreMatchers.
-        containsString("<connection>scm:git:git://github.com/yoomoney-gradle-plugins/test_artifact_id.git</connection>"))
+        MatcherAssert.assertThat(pom, CoreMatchers
+                .containsString("<connection>scm:git:git://github.com/yoomoney-gradle-plugins/test_artifact_id.git</connection>"))
         MatcherAssert.assertThat(pom, CoreMatchers
                 .containsString("<developerConnection>scm:git:ssh://github.com:yoomoney-gradle-plugins/test_artifact_id.git</developerConnection>"))
         MatcherAssert.assertThat(pom, CoreMatchers.containsString("<name>MIT License</name>"))
