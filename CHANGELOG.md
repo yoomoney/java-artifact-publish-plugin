@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [3.1.0](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/4) (19-03-2021)
+
 * Сборка проекта переведена на gradle-project-plugin.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [3.0.2](https://api.github.com/repos/yoomoney-gradle-plugins/java-artifact-publish-plugin/pulls/3) (11-03-2021)
 
 * Имя публикации сделано публичным для возможности использования в местах подключения.
