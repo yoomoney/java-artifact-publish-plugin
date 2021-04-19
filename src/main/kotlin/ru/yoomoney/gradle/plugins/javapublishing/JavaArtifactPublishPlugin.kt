@@ -1,8 +1,6 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
-import io.github.gradlenexus.publishplugin.NexusPublishExtension
-import io.github.gradlenexus.publishplugin.NexusPublishPlugin
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin
 import org.gradle.api.Project
