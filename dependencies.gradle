@@ -1,5 +1,6 @@
 dependencies {
-    implementation localGroovy()
+    implementation localGroovy(),
+            "io.github.gradle-nexus:publish-plugin:1.0.0"
 
     testImplementation gradleTestKit(),
             'com.netflix.nebula:nebula-test:7.6.0'

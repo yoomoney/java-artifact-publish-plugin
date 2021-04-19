@@ -1,6 +1,8 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
+import io.github.gradlenexus.publishplugin.NexusPublishExtension
+import io.github.gradlenexus.publishplugin.NexusPublishPlugin
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -28,6 +30,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.pluginManager.apply(MavenPublishPlugin::class.java)
+        project.pluginManager.apply(NexusPublishPlugin::class.java)
         // Пытаемся получить зарегистрированный extension для случая когда настройки
         // данного плагина необходимо выставить в соседнем блоке afterEvaluate
         val extension = project.extensions.findByType(JavaArtifactPublishExtension::class.java)
@@ -41,6 +44,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             val artifactPublishExtension = project.extensions.getByType(JavaArtifactPublishExtension::class.java)
             configureJavadoc(target)
             configurePublishing(target, artifactPublishExtension)
+            configureStaging(target)
             if (artifactPublishExtension.signing && !project.isSnapshot()) {
                 signing(target)
             }
@@ -71,6 +75,12 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             javadocJar.archiveClassifier.set("javadoc")
             javadocJar.from(javadoc.destinationDir!!)
         }
+    }
+
+    private fun configureStaging(project: Project) {
+        val publishingExtension = project.extensions.getByType(NexusPublishExtension::class.java)
+
+        publishingExtension.repositories.sonatype()
     }
 
     private fun configurePublishing(project: Project, javaArtifactPublishExtension: JavaArtifactPublishExtension) {
