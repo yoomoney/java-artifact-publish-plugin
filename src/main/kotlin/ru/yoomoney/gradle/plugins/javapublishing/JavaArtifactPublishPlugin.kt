@@ -45,7 +45,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             configureJavadoc(target)
             configurePublishing(target, artifactPublishExtension)
             configureStaging(target)
-            if (artifactPublishExtension.signing && !project.isSnapshot()) {
+            if (artifactPublishExtension.signing) {
                 signing(target)
             }
             configureStoreVersion(target, artifactPublishExtension)
