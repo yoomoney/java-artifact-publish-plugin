@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлена информация о сборке, покрытии, лицензии в README.md.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [3.1.0](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/4) (19-03-2021)
 

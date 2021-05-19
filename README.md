@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.com/yoomoney-gradle-plugins/java-artifact-publish-plugin.svg?branch=master)](https://travis-ci.com/yoomoney-gradle-plugins/java-artifact-publish-plugin)
+[![codecov](https://codecov.io/gh/yoomoney-gradle-plugins/java-artifact-publish-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/yoomoney-gradle-plugins/java-artifact-publish-plugin)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # java-artifact-publish-plugin
 Плагин реализует и настраивает функционал публикации артефакта.
 
