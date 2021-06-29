@@ -93,7 +93,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             }
         }
 
-        if (javaArtifactPublishExtension.staging) {
+        if (javaArtifactPublishExtension.staging.enabled) {
             configureStagingRepositories(project, javaArtifactPublishExtension)
         } else {
             configureReleaseRepositories(project, javaArtifactPublishExtension)
@@ -133,7 +133,7 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         nexusPublishingExtension.packageGroup.set(javaArtifactPublishExtension.groupId)
 
         nexusPublishingExtension.repositories.create("maven") { nexusRepository: NexusRepository ->
-            nexusRepository.nexusUrl.set(URI(javaArtifactPublishExtension.nexusUrl!!))
+            nexusRepository.nexusUrl.set(URI(javaArtifactPublishExtension.staging.nexusUrl!!))
             nexusRepository.snapshotRepositoryUrl.set(URI(javaArtifactPublishExtension.snapshotRepository!!))
             nexusRepository.username.set(System.getenv("NEXUS_USER"))
             nexusRepository.password.set(System.getenv("NEXUS_PASSWORD"))

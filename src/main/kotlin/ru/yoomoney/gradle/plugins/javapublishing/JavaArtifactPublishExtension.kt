@@ -12,11 +12,6 @@ import org.gradle.util.ConfigureUtil
  */
 open class JavaArtifactPublishExtension {
     /**
-     * URL адрес nexus сервера.
-     * Используется для управления staging репозиториями при публикации артефакта
-     */
-    var nexusUrl: String? = null
-    /**
      * Имя пользователя для отгрузки в Nexus
      */
     var nexusUser: String? = null
@@ -49,9 +44,9 @@ open class JavaArtifactPublishExtension {
      */
     var signing: Boolean = false
     /**
-     * Нужно ли публиковать артефакт в staging репозиторий
+     * Настройки публикации release артефактов в staging репозиторий
      */
-    var staging: Boolean = false
+    var staging: StagingPublicationSettings = StagingPublicationSettings()
     /**
      * Настройки дополнительной информацией о публикуемом артефакте. Информация добавляется в pom.
      */
@@ -67,5 +62,17 @@ open class JavaArtifactPublishExtension {
 
     fun publicationAdditionalInfo(publicationInfo: PublicationAdditionalInfo) {
         publicationAdditionalInfo = publicationInfo
+    }
+
+    fun staging(closure: Closure<*>) {
+        val action = ConfigureUtil.configureUsing<StagingPublicationSettings>(closure)
+        val staging = StagingPublicationSettings()
+        action.execute(staging)
+
+        staging(staging)
+    }
+
+    fun staging(staging: StagingPublicationSettings) {
+        this.staging = staging
     }
 }

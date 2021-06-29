@@ -49,7 +49,10 @@ javaArtifactPublishSettings {
 Если выгружаемый артефакт необходимо публиковать в staging репозиторий, укажите в настройках:
 ```groovy
     javaArtifactPublishSettings {
-        staging = true // по умолчанию публикация в staging отключена
+        staging {
+            enabled = true // по умолчанию публикация в staging отключена
+            nexusUrl = 'https://oss.sonatype.org/service/local/'
+        }
     }
 ```
 Задача `publishMainArtifactPublicationToMavenRepository` публикует артефакт в созданный staging репозиторий.
@@ -65,8 +68,6 @@ javaArtifactPublishSettings {
 Плагин конфигурируется следующим образом:
 ```groovy
 javaArtifactPublishSettings {
-    // URL nexus сервера для управления staging репозиториями
-    nexusUrl = 'https://oss.sonatype.org/service/local/' 
     // Имя пользователя для отгрузки в Nexus, обязательный параметр.
     nexusUser = System.getenv("NEXUS_USER")
     // Пароль пользователя для отгрузки в Nexus, обязательный параметр.
@@ -79,12 +80,14 @@ javaArtifactPublishSettings {
     publishingComponent = components.java
     // Репозиторий, в который загружать snapshot версии, обязательный параметр.
     snapshotRepository = "https://yoomoney/repository/snapshots/"
-    // Репозиторий, в который загружать release версии, обязательный параметр если не используется публикация в staging 
+    // Репозиторий, в который загружать release версии, обязательный параметр если публикация в staging выключена 
     releaseRepository = "https://yoomoney/repository/release/"
-    // Нужно ли подписывать артефакт при публикации, необязательный параметр.
-    signing = false //значение по умолчанию
-    // Нужно ли публиковать release артефакт в staging репозиторий
-    staging = false // значение по умолчанию
+    staging {
+        // Нужно ли публиковать release артефакт в staging репозиторий
+        enabled = false // значение по умолчанию
+        // URL nexus сервиса для управления staging репозиториями, обязательный параметр если публикация в staging включена
+        nexusUrl = 'https://oss.sonatype.org/service/local/'
+    }
 
     //добавление дополнительной информации в pom проекта.
     //по умолчанию дополнительная информация не добавляется (addInfo=false).

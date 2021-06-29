@@ -22,9 +22,11 @@ class PublishingTest : AbstractReleaseTest() {
         javaArtifactPublishSettings {
             artifactId = "test_artifact_id"
             groupId = "test_group_id"
-            nexusUrl = "https://oss.sonatype.org/service/local/"
             snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots/"
-            staging = true
+            staging {
+                enabled = true
+                nexusUrl = "https://oss.sonatype.org/service/local/"
+            }
         }
         """)
 
@@ -41,7 +43,7 @@ class PublishingTest : AbstractReleaseTest() {
         assertThat(result.output, containsString("publishMainArtifactPublicationToMavenLocal"))
         assertThat(result.output, containsString("publishMainArtifactPublicationToMavenRepository"))
 
-        // задачи управления staging репозиторием
+        // задачи управления staging репозиториями
         assertThat(result.output, containsString("initializeMavenStagingRepository"))
         assertThat(result.output, containsString("closeMavenStagingRepository"))
         assertThat(result.output, containsString("releaseMavenStagingRepository"))
@@ -61,7 +63,7 @@ class PublishingTest : AbstractReleaseTest() {
         """)
 
         // when
-        val result = runTasksSuccessfully("tasks")
+        val result = runTasksSuccessfully("tasks", "--all")
 
         // then
         // задачи публикации артефакта
@@ -72,11 +74,39 @@ class PublishingTest : AbstractReleaseTest() {
         assertThat(result.output, containsString("publishMainArtifactPublicationToMavenLocal"))
         assertThat(result.output, containsString("publishMainArtifactPublicationToMavenRepository"))
 
-        // задачи управления staging репозиторием
+        // задачи управления staging репозиториями
         assertThat(result.output, not(containsString("initializeMavenStagingRepository")))
         assertThat(result.output, not(containsString("closeMavenStagingRepository")))
         assertThat(result.output, not(containsString("releaseMavenStagingRepository")))
         assertThat(result.output, not(containsString("closeAndReleaseMavenStagingRepository")))
+    }
+
+    @Test
+    fun `should publish snapshot artefacts to snapshot repository when staging enabled`() {
+        // given
+        gradleProperties.writeText("version=1.0.0-SNAPSHOT")
+        buildFile.appendText("""
+        javaArtifactPublishSettings {
+            artifactId = "test_artifact_id"
+            groupId = "test_group_id"
+            snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots/"
+            staging {
+                enabled = true
+                nexusUrl = "https://oss.sonatype.org/service/local/"
+            }
+        }
+        
+        task printPublishingRepository {
+            def publishing = project.extensions.getByName("publishing")
+            doLast { println publishing.repositories.maven.url }
+        }
+        """)
+
+        // when
+        val result = runTasksSuccessfully("printPublishingRepository")
+
+        // then
+        assertThat(result.output, containsString("https://oss.sonatype.org/content/repositories/snapshots/"))
     }
 
     @Test
