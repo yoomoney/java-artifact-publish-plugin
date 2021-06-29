@@ -45,11 +45,28 @@ javaArtifactPublishSettings {
 Для подписи артефакта используется стандартный плагин [signing](https://docs.gradle.org/current/userguide/signing_plugin.html).  
 Подписаны будут только релизные версии артефактов, т.к. для загрузки snapshot версий подпись не нужна.
 
+## Публикация артефакта в staging репозиторий
+Если выгружаемый артефакт необходимо публиковать в staging репозиторий, укажите в настройках:
+```groovy
+    javaArtifactPublishSettings {
+        staging = true // по умолчанию публикация в staging отключена
+    }
+```
+Задача `publishMainArtifactPublicationToMavenRepository` публикует артефакт в созданный staging репозиторий.
+Для выпуска (release) опубликованного артефакта необходимо вызвать задачу `closeAndReleaseMavenStagingRepository`.
+
+Задачи создания и закрытия staging репозитория должны быть выполнены в едином gradle процессе,
+иначе информация о созданном staging репозитория потеряется ([связанная задача](https://github.com/gradle-nexus/publish-plugin/issues/19)).
+
+Для публикации артефака в staging репозиторий используется плагин [io.github.gradle-nexus.publish-plugin](https://github.com/gradle-nexus/publish-plugin)
+
 ## Конфигурация
 
 Плагин конфигурируется следующим образом:
 ```groovy
 javaArtifactPublishSettings {
+    // URL nexus сервера для управления staging репозиториями
+    nexusUrl = 'https://oss.sonatype.org/service/local/' 
     // Имя пользователя для отгрузки в Nexus, обязательный параметр.
     nexusUser = System.getenv("NEXUS_USER")
     // Пароль пользователя для отгрузки в Nexus, обязательный параметр.
@@ -62,10 +79,12 @@ javaArtifactPublishSettings {
     publishingComponent = components.java
     // Репозиторий, в который загружать snapshot версии, обязательный параметр.
     snapshotRepository = "https://yoomoney/repository/snapshots/"
-    // Репозиторий, в который загружать release версии, обязательный параметр.
+    // Репозиторий, в который загружать release версии, обязательный параметр если не используется публикация в staging 
     releaseRepository = "https://yoomoney/repository/release/"
     // Нужно ли подписывать артефакт при публикации, необязательный параметр.
     signing = false //значение по умолчанию
+    // Нужно ли публиковать release артефакт в staging репозиторий
+    staging = false // значение по умолчанию
 
     //добавление дополнительной информации в pom проекта.
     //по умолчанию дополнительная информация не добавляется (addInfo=false).

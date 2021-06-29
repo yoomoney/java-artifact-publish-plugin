@@ -11,7 +11,11 @@ import org.gradle.util.ConfigureUtil
  * @since 21.10.2019
  */
 open class JavaArtifactPublishExtension {
-
+    /**
+     * URL адрес nexus сервера.
+     * Используется для управления staging репозиториями при публикации артефакта
+     */
+    var nexusUrl: String? = null
     /**
      * Имя пользователя для отгрузки в Nexus
      */
@@ -44,7 +48,10 @@ open class JavaArtifactPublishExtension {
      * Нужно ли подписывать артефакт при публикации
      */
     var signing: Boolean = false
-
+    /**
+     * Нужно ли публиковать артефакт в staging репозиторий
+     */
+    var staging: Boolean = false
     /**
      * Настройки дополнительной информацией о публикуемом артефакте. Информация добавляется в pom.
      */

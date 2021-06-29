@@ -1,7 +1,9 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.not
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import java.io.File
 import java.nio.file.Paths
@@ -11,6 +13,71 @@ import java.nio.file.Paths
  * @since 21.10.2019
  */
 class PublishingTest : AbstractReleaseTest() {
+
+    @Test
+    fun `should create nexus-public-plugin tasks when staging enabled`() {
+        // given
+        gradleProperties.writeText("version=1.0.0")
+        buildFile.appendText("""
+        javaArtifactPublishSettings {
+            artifactId = "test_artifact_id"
+            groupId = "test_group_id"
+            nexusUrl = "https://oss.sonatype.org/service/local/"
+            snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots/"
+            staging = true
+        }
+        """)
+
+        // when
+        val result = runTasksSuccessfully("tasks", "--all")
+
+        // then
+        // задачи публикации артефакта
+        assertThat(result.output.lines().count { it.startsWith("publish") }, `is`(6))
+        assertThat(result.output, containsString("publish"))
+        assertThat(result.output, containsString("publishToMaven"))
+        assertThat(result.output, containsString("publishToMavenLocal"))
+        assertThat(result.output, containsString("publishAllPublicationsToMavenRepository"))
+        assertThat(result.output, containsString("publishMainArtifactPublicationToMavenLocal"))
+        assertThat(result.output, containsString("publishMainArtifactPublicationToMavenRepository"))
+
+        // задачи управления staging репозиторием
+        assertThat(result.output, containsString("initializeMavenStagingRepository"))
+        assertThat(result.output, containsString("closeMavenStagingRepository"))
+        assertThat(result.output, containsString("releaseMavenStagingRepository"))
+        assertThat(result.output, containsString("closeAndReleaseMavenStagingRepository"))
+    }
+
+    @Test
+    fun `should create only maven-publish-plugin tasks when staging disabled`() {
+        // given
+        buildFile.appendText("""
+        javaArtifactPublishSettings {
+            artifactId = "test_artifact_id"
+            groupId = "test_group_id"
+            snapshotRepository = "https://yoomoney.ru/repository/snapshots/"
+            releaseRepository = "https://yoomoney.ru/repository/releases/"
+        }
+        """)
+
+        // when
+        val result = runTasksSuccessfully("tasks")
+
+        // then
+        // задачи публикации артефакта
+        assertThat(result.output.lines().count { it.startsWith("publish") }, `is`(5))
+        assertThat(result.output, containsString("publish "))
+        assertThat(result.output, containsString("publishToMavenLocal"))
+        assertThat(result.output, containsString("publishAllPublicationsToMavenRepository"))
+        assertThat(result.output, containsString("publishMainArtifactPublicationToMavenLocal"))
+        assertThat(result.output, containsString("publishMainArtifactPublicationToMavenRepository"))
+
+        // задачи управления staging репозиторием
+        assertThat(result.output, not(containsString("initializeMavenStagingRepository")))
+        assertThat(result.output, not(containsString("closeMavenStagingRepository")))
+        assertThat(result.output, not(containsString("releaseMavenStagingRepository")))
+        assertThat(result.output, not(containsString("closeAndReleaseMavenStagingRepository")))
+    }
 
     @Test
     fun `should publish`() {
@@ -23,7 +90,7 @@ class PublishingTest : AbstractReleaseTest() {
         }
         """)
         val result = runTasksSuccessfully("build", "pTML", "--info")
-        MatcherAssert.assertThat(result.output, CoreMatchers.not(CoreMatchers.containsString("signMainArtifactPublication")))
+        assertThat(result.output, not(containsString("signMainArtifactPublication")))
     }
 
     @Test
@@ -40,7 +107,7 @@ class PublishingTest : AbstractReleaseTest() {
         """)
         val result = runTasksSuccessfully("build", "pTML", "--info", "--stacktrace")
 
-        MatcherAssert.assertThat(result.output, CoreMatchers.not(CoreMatchers.containsString("signMainArtifactPublication")))
+        assertThat(result.output, not(containsString("signMainArtifactPublication")))
     }
 
     @Test
@@ -89,16 +156,13 @@ class PublishingTest : AbstractReleaseTest() {
         val pom = Paths.get(buildFile.parentFile.absolutePath, "/build/publications/mainArtifact/pom-default.xml").toFile()
                 .readText()
 
-        MatcherAssert.assertThat(pom, CoreMatchers
-                .containsString("<url>https://github.com/yoomoney-gradle-plugins/test_artifact_id</url>"))
-        MatcherAssert.assertThat(pom, CoreMatchers.containsString("<email>ivan@test.ru</email>"))
-        MatcherAssert.assertThat(pom, CoreMatchers.containsString("<name>Petr</name>"))
-        MatcherAssert.assertThat(pom, CoreMatchers
-                .containsString("<connection>scm:git:git://github.com/yoomoney-gradle-plugins/test_artifact_id.git</connection>"))
-        MatcherAssert.assertThat(pom, CoreMatchers
-                .containsString("<developerConnection>scm:git:ssh://github.com:yoomoney-gradle-plugins/test_artifact_id.git</developerConnection>"))
-        MatcherAssert.assertThat(pom, CoreMatchers.containsString("<name>MIT License</name>"))
+        assertThat(pom, containsString("<url>https://github.com/yoomoney-gradle-plugins/test_artifact_id</url>"))
+        assertThat(pom, containsString("<email>ivan@test.ru</email>"))
+        assertThat(pom, containsString("<name>Petr</name>"))
+        assertThat(pom, containsString("<connection>scm:git:git://github.com/yoomoney-gradle-plugins/test_artifact_id.git</connection>"))
+        assertThat(pom, containsString("<developerConnection>scm:git:ssh://github.com:yoomoney-gradle-plugins/test_artifact_id.git</developerConnection>"))
+        assertThat(pom, containsString("<name>MIT License</name>"))
 
-        MatcherAssert.assertThat(result.output, CoreMatchers.containsString("signMainArtifactPublication"))
+        assertThat(result.output, containsString("signMainArtifactPublication"))
     }
 }
