@@ -11,7 +11,6 @@ import org.gradle.util.ConfigureUtil
  * @since 21.10.2019
  */
 open class JavaArtifactPublishExtension {
-
     /**
      * Имя пользователя для отгрузки в Nexus
      */
@@ -44,7 +43,10 @@ open class JavaArtifactPublishExtension {
      * Нужно ли подписывать артефакт при публикации
      */
     var signing: Boolean = false
-
+    /**
+     * Настройки публикации release артефактов в staging репозиторий
+     */
+    var staging: StagingPublicationSettings = StagingPublicationSettings()
     /**
      * Настройки дополнительной информацией о публикуемом артефакте. Информация добавляется в pom.
      */
@@ -60,5 +62,17 @@ open class JavaArtifactPublishExtension {
 
     fun publicationAdditionalInfo(publicationInfo: PublicationAdditionalInfo) {
         publicationAdditionalInfo = publicationInfo
+    }
+
+    fun staging(closure: Closure<*>) {
+        val action = ConfigureUtil.configureUsing<StagingPublicationSettings>(closure)
+        val staging = StagingPublicationSettings()
+        action.execute(staging)
+
+        staging(staging)
+    }
+
+    fun staging(staging: StagingPublicationSettings) {
+        this.staging = staging
     }
 }

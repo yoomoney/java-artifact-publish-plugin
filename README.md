@@ -45,6 +45,24 @@ javaArtifactPublishSettings {
 Для подписи артефакта используется стандартный плагин [signing](https://docs.gradle.org/current/userguide/signing_plugin.html).  
 Подписаны будут только релизные версии артефактов, т.к. для загрузки snapshot версий подпись не нужна.
 
+## Публикация артефакта в staging репозиторий
+Если выгружаемый артефакт необходимо публиковать в staging репозиторий, укажите в настройках:
+```groovy
+    javaArtifactPublishSettings {
+        staging {
+            enabled = true // по умолчанию публикация в staging отключена
+            nexusUrl = 'https://oss.sonatype.org/service/local/'
+        }
+    }
+```
+Задача `publishMainArtifactPublicationToMavenRepository` публикует артефакт в созданный staging репозиторий.
+Для выпуска (release) опубликованного артефакта необходимо вызвать задачу `closeAndReleaseMavenStagingRepository`.
+
+Задачи создания и закрытия staging репозитория должны быть выполнены в едином gradle процессе,
+иначе информация о созданном staging репозитория потеряется ([связанная задача](https://github.com/gradle-nexus/publish-plugin/issues/19)).
+
+Для публикации артефака в staging репозиторий используется плагин [io.github.gradle-nexus.publish-plugin](https://github.com/gradle-nexus/publish-plugin)
+
 ## Конфигурация
 
 Плагин конфигурируется следующим образом:
@@ -62,10 +80,14 @@ javaArtifactPublishSettings {
     publishingComponent = components.java
     // Репозиторий, в который загружать snapshot версии, обязательный параметр.
     snapshotRepository = "https://yoomoney/repository/snapshots/"
-    // Репозиторий, в который загружать release версии, обязательный параметр.
+    // Репозиторий, в который загружать release версии, обязательный параметр если публикация в staging выключена 
     releaseRepository = "https://yoomoney/repository/release/"
-    // Нужно ли подписывать артефакт при публикации, необязательный параметр.
-    signing = false //значение по умолчанию
+    staging {
+        // Нужно ли публиковать release артефакт в staging репозиторий
+        enabled = false // значение по умолчанию
+        // URL nexus сервиса для управления staging репозиториями, обязательный параметр если публикация в staging включена
+        nexusUrl = 'https://oss.sonatype.org/service/local/'
+    }
 
     //добавление дополнительной информации в pom проекта.
     //по умолчанию дополнительная информация не добавляется (addInfo=false).

@@ -1,6 +1,9 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
+import io.github.gradlenexus.publishplugin.NexusPublishExtension
+import io.github.gradlenexus.publishplugin.NexusPublishPlugin
+import io.github.gradlenexus.publishplugin.NexusRepository
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -90,6 +93,20 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             }
         }
 
+        if (javaArtifactPublishExtension.staging.enabled) {
+            configureStagingRepositories(project, javaArtifactPublishExtension)
+        } else {
+            configureReleaseRepositories(project, javaArtifactPublishExtension)
+        }
+        project.tasks.withType(PublishToMavenRepository::class.java).forEach { task -> task.dependsOn("jar", "test") }
+    }
+
+    private fun configureReleaseRepositories(
+        project: Project,
+        javaArtifactPublishExtension: JavaArtifactPublishExtension
+    ) {
+        val publishingExtension = project.extensions.getByType(PublishingExtension::class.java)
+
         publishingExtension.repositories { artifactRepositories ->
             artifactRepositories.maven { repository ->
                 if (project.isSnapshot()) {
@@ -104,7 +121,23 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
                 }
             }
         }
-        project.tasks.withType(PublishToMavenRepository::class.java).forEach { task -> task.dependsOn("jar", "test") }
+    }
+
+    private fun configureStagingRepositories(
+        project: Project,
+        javaArtifactPublishExtension: JavaArtifactPublishExtension
+    ) {
+        project.pluginManager.apply(NexusPublishPlugin::class.java)
+
+        val nexusPublishingExtension = project.extensions.getByType(NexusPublishExtension::class.java)
+        nexusPublishingExtension.packageGroup.set(javaArtifactPublishExtension.groupId)
+
+        nexusPublishingExtension.repositories.create("maven") { nexusRepository: NexusRepository ->
+            nexusRepository.nexusUrl.set(URI(javaArtifactPublishExtension.staging.nexusUrl!!))
+            nexusRepository.snapshotRepositoryUrl.set(URI(javaArtifactPublishExtension.snapshotRepository!!))
+            nexusRepository.username.set(System.getenv("NEXUS_USER"))
+            nexusRepository.password.set(System.getenv("NEXUS_PASSWORD"))
+        }
     }
 
     private fun Project.isSnapshot() = project.version.toString().endsWith("-SNAPSHOT")
