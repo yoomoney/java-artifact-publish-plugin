@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [3.2.0](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/6) (29-06-2021)
 
 * Добавлена поддержка публикации release артефакта в staging репозиторий
