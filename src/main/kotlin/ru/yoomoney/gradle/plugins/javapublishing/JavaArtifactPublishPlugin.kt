@@ -127,6 +127,10 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
         project: Project,
         javaArtifactPublishExtension: JavaArtifactPublishExtension
     ) {
+        if (!project.rootProject.equals(project)) {
+            // NexusPublishPlugin необходимо конфигурировать только для корневого проекта
+            return
+        }
         project.pluginManager.apply(NexusPublishPlugin::class.java)
 
         val nexusPublishingExtension = project.extensions.getByType(NexusPublishExtension::class.java)
