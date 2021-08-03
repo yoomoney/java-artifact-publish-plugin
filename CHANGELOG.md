@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [3.2.1](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/7) (03-08-2021)
 
 * Исправлено конфигурирование плагина для gradle подпроектов с публикацией в staging
