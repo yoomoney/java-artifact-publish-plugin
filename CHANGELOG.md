@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
-* Исправлено конфигурирование плагина для gradle подпроектов с публикацией в staging 
-### NEXT_VERSION_DESCRIPTION_END
+## [3.2.1](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/7) (03-08-2021)
+
+* Исправлено конфигурирование плагина для gradle подпроектов с публикацией в staging
+
 ## [3.2.0](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/6) (29-06-2021)
 
 * Добавлена поддержка публикации release артефакта в staging репозиторий
