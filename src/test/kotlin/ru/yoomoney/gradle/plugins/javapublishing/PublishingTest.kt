@@ -51,6 +51,65 @@ class PublishingTest : AbstractReleaseTest() {
     }
 
     @Test
+    fun `should create publish tasks for multi-module projects when staging enabled`() {
+        // given
+        val key = javaClass.getResource("test_gpg_key.txt")?.readText()
+        gradleProperties.writeText("version=1.0.0\n" +
+                "signingPassword=123456\n" +
+                "signingKey=$key")
+
+        projectDir.newFile("settings.gradle").appendText("""
+            include 'submodule1'
+            include 'submodule2'
+            include 'submodule3'
+        """.trimIndent())
+
+        buildFile.appendText("""
+            
+        javaArtifactPublishSettings {
+            artifactId = "test_artifact_id"
+            groupId = "test_group_id"
+            snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots/"
+            signing = true
+            staging {
+                enabled = true
+                nexusUrl = "https://oss.sonatype.org/service/local/"
+            }
+        }
+        
+        subprojects {
+            apply plugin: 'java'
+            apply plugin: 'ru.yoomoney.gradle.plugins.java-artifact-publish-plugin'
+            
+            javaArtifactPublishSettings {
+                artifactId = "test_artifact_id"
+                groupId = "test_group_id"
+                snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots/"
+                signing = true
+                staging {
+                    enabled = true
+                    nexusUrl = "https://oss.sonatype.org/service/local/"
+                }
+            }
+        }
+        """)
+
+        // when
+        val result = runTasksSuccessfully("tasks", "--all")
+
+        // then
+        assertThat(result.output, containsString("publishMainArtifactPublicationToMavenRepository"))
+        assertThat(result.output, containsString("submodule1:publishMainArtifactPublicationToMavenRepository"))
+        assertThat(result.output, containsString("submodule2:publishMainArtifactPublicationToMavenRepository"))
+        assertThat(result.output, containsString("submodule3:publishMainArtifactPublicationToMavenRepository"))
+
+        assertThat(result.output, containsString("signMainArtifactPublication"))
+        assertThat(result.output, containsString("submodule1:signMainArtifactPublication"))
+        assertThat(result.output, containsString("submodule2:signMainArtifactPublication"))
+        assertThat(result.output, containsString("submodule3:signMainArtifactPublication"))
+    }
+
+    @Test
     fun `should create only maven-publish-plugin tasks when staging disabled`() {
         // given
         buildFile.appendText("""
