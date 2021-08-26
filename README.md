@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/yoomoney-gradle-plugins/java-artifact-publish-plugin.svg?branch=master)](https://travis-ci.com/yoomoney-gradle-plugins/java-artifact-publish-plugin)
-[![codecov](https://codecov.io/gh/yoomoney-gradle-plugins/java-artifact-publish-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/yoomoney-gradle-plugins/java-artifact-publish-plugin)
+[![Build Status](https://travis-ci.com/yoomoney/java-artifact-publish-plugin.svg?branch=master)](https://travis-ci.com/yoomoney/java-artifact-publish-plugin)
+[![codecov](https://codecov.io/gh/yoomoney/java-artifact-publish-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/yoomoney/java-artifact-publish-plugin)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # java-artifact-publish-plugin
@@ -93,7 +93,7 @@ javaArtifactPublishSettings {
     //по умолчанию дополнительная информация не добавляется (addInfo=false).
     publicationAdditionalInfo {
         addInfo = true
-        organizationUrl = "https://github.com/yoomoney-gradle-plugins"
+        organizationUrl = "https://github.com/yoomoney"
         license {
             name = "MIT License"
             url = "http://www.opensource.org/licenses/mit-license.php"
