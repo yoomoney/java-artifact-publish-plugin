@@ -216,7 +216,7 @@ class PublishingTest : AbstractReleaseTest() {
             signing = true
             publicationAdditionalInfo {
                 addInfo = true
-                organizationUrl = "https://github.com/yoomoney-gradle-plugins"
+                organizationUrl = "https://github.com/yoomoney"
                 
                 license {
                     name = "MIT License"
@@ -245,11 +245,11 @@ class PublishingTest : AbstractReleaseTest() {
         val pom = Paths.get(buildFile.parentFile.absolutePath, "/build/publications/mainArtifact/pom-default.xml").toFile()
                 .readText()
 
-        assertThat(pom, containsString("<url>https://github.com/yoomoney-gradle-plugins/test_artifact_id</url>"))
+        assertThat(pom, containsString("<url>https://github.com/yoomoney/test_artifact_id</url>"))
         assertThat(pom, containsString("<email>ivan@test.ru</email>"))
         assertThat(pom, containsString("<name>Petr</name>"))
-        assertThat(pom, containsString("<connection>scm:git:git://github.com/yoomoney-gradle-plugins/test_artifact_id.git</connection>"))
-        assertThat(pom, containsString("<developerConnection>scm:git:ssh://github.com:yoomoney-gradle-plugins/test_artifact_id.git</developerConnection>"))
+        assertThat(pom, containsString("<connection>scm:git:git://github.com/yoomoney/test_artifact_id.git</connection>"))
+        assertThat(pom, containsString("<developerConnection>scm:git:ssh://github.com:yoomoney/test_artifact_id.git</developerConnection>"))
         assertThat(pom, containsString("<name>MIT License</name>"))
 
         assertThat(result.output, containsString("signMainArtifactPublication"))

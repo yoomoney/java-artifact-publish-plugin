@@ -1,31 +1,32 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Переезд организации yoomoney-gradle-plugins -> yoomoney
 ### NEXT_VERSION_DESCRIPTION_END
-## [3.2.1](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/7) (03-08-2021)
+## [3.2.1](https://github.com/yoomoney/java-artifact-publish-plugin/pull/7) (03-08-2021)
 
 * Исправлено конфигурирование плагина для gradle подпроектов с публикацией в staging
 
-## [3.2.0](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/6) (29-06-2021)
+## [3.2.0](https://github.com/yoomoney/java-artifact-publish-plugin/pull/6) (29-06-2021)
 
 * Добавлена поддержка публикации release артефакта в staging репозиторий
 
-## [3.1.1](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/5) (19-05-2021)
+## [3.1.1](https://github.com/yoomoney/java-artifact-publish-plugin/pull/5) (19-05-2021)
 
 * Добавлена информация о сборке, покрытии, лицензии в README.md.
 
-## [3.1.0](https://github.com/yoomoney-gradle-plugins/java-artifact-publish-plugin/pull/4) (19-03-2021)
+## [3.1.0](https://github.com/yoomoney/java-artifact-publish-plugin/pull/4) (19-03-2021)
 
 * Сборка проекта переведена на gradle-project-plugin.
 
-## [3.0.2](https://api.github.com/repos/yoomoney-gradle-plugins/java-artifact-publish-plugin/pulls/3) (11-03-2021)
+## [3.0.2](https://api.github.com/repos/yoomoney/java-artifact-publish-plugin/pulls/3) (11-03-2021)
 
 * Имя публикации сделано публичным для возможности использования в местах подключения.
 
-## [3.0.1](https://api.github.com/repos/yoomoney-gradle-plugins/java-artifact-publish-plugin/pulls/2) (02-03-2021)
+## [3.0.1](https://api.github.com/repos/yoomoney/java-artifact-publish-plugin/pulls/2) (02-03-2021)
 
 * Теперь подпись артефактов осуществляется только для релизных версий, т.к. для выгрузки snapshot подпись не нужна.
 
-## [3.0.0](https://api.github.com/repos/yoomoney-gradle-plugins/java-artifact-publish-plugin/pulls/1) (02-03-2021)
+## [3.0.0](https://api.github.com/repos/yoomoney/java-artifact-publish-plugin/pulls/1) (02-03-2021)
 
 * Внесены изменения в связи с переходом на git-hub:
 * Переименованы пакеты

@@ -18,7 +18,7 @@ class PublicationAdditionalInfo {
 
     /**
      * url организации, из которого будут создаваться url-ы для секции scm
-     * Пример: https://github.com/yoomoney-gradle-plugins
+     * Пример: https://github.com/yoomoney
      */
     var organizationUrl: String? = null
 
