@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [3.3.0](https://github.com/yoomoney/java-artifact-publish-plugin/pull/8) (26-08-2021)
 
 * Переезд организации yoomoney-gradle-plugins -> yoomoney
