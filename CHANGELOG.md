@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлено определение зависимостей по runtime зависимостям для возможности не указывать версии в dependencies при использовании dependencyManagement.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [3.3.0](https://github.com/yoomoney/java-artifact-publish-plugin/pull/8) (26-08-2021)
 
