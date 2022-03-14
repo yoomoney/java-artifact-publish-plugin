@@ -88,6 +88,11 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
             mavenPublication.artifact(project.tasks.getByName("sourcesJar"))
             mavenPublication.artifact(project.tasks.getByName("javadocJar"))
 
+            mavenPublication.versionMapping { it ->
+                it.usage("java-api") { it.fromResolutionOf("runtimeClasspath") }
+                it.usage("java-runtime") { it.fromResolutionResult() }
+            }
+
             if (publicationAdditionalInfo.addInfo) {
                 addAdditionalInfo(javaArtifactPublishExtension.artifactId!!, publicationAdditionalInfo, mavenPublication)
             }
