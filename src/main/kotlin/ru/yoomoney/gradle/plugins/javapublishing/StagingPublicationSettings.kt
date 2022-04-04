@@ -6,7 +6,7 @@ package ru.yoomoney.gradle.plugins.javapublishing
  * @author Petr Zinin pgzinin@yoomoney.ru
  * @since 29.06.2021
  */
-class StagingPublicationSettings {
+open class StagingPublicationSettings {
     /**
      * Нужно ли публиковать артефакт в staging репозиторий
      */

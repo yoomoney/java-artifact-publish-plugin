@@ -8,7 +8,7 @@ import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.component.SoftwareComponent
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
@@ -58,8 +58,8 @@ class JavaArtifactPublishPlugin : Plugin<Project> {
 
         project.tasks.create("sourcesJar", Jar::class.java) { sourcesJar ->
             val sourceSet = project
-                    .convention
-                    .getPlugin(JavaPluginConvention::class.java)
+                    .extensions
+                    .getByType(JavaPluginExtension::class.java)
                     .sourceSets
                     .getByName("main")
                     .allSource

@@ -1,8 +1,9 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
-import groovy.lang.Closure
+import org.gradle.api.Action
 import org.gradle.api.component.SoftwareComponent
-import org.gradle.util.ConfigureUtil
+import org.gradle.api.model.ObjectFactory
+import javax.inject.Inject
 
 /**
  * Конфигурация плагина публикации
@@ -10,7 +11,7 @@ import org.gradle.util.ConfigureUtil
  * @author Oleg Kandaurov
  * @since 21.10.2019
  */
-open class JavaArtifactPublishExtension {
+open class JavaArtifactPublishExtension @Inject constructor(private val objects: ObjectFactory) {
     /**
      * Имя пользователя для отгрузки в Nexus
      */
@@ -46,17 +47,15 @@ open class JavaArtifactPublishExtension {
     /**
      * Настройки публикации release артефактов в staging репозиторий
      */
-    var staging: StagingPublicationSettings = StagingPublicationSettings()
+    var staging: StagingPublicationSettings = objects.newInstance(StagingPublicationSettings::class.java)
     /**
      * Настройки дополнительной информацией о публикуемом артефакте. Информация добавляется в pom.
      */
-    var publicationAdditionalInfo = PublicationAdditionalInfo()
+    var publicationAdditionalInfo = objects.newInstance(PublicationAdditionalInfo::class.java)
 
-    fun publicationAdditionalInfo(closure: Closure<*>) {
-        val action = ConfigureUtil.configureUsing<PublicationAdditionalInfo>(closure)
-        val publicationInfo = PublicationAdditionalInfo()
+    fun publicationAdditionalInfo(action: Action<PublicationAdditionalInfo>) {
+        val publicationInfo = objects.newInstance(PublicationAdditionalInfo::class.java)
         action.execute(publicationInfo)
-
         publicationAdditionalInfo(publicationInfo)
     }
 
@@ -64,9 +63,8 @@ open class JavaArtifactPublishExtension {
         publicationAdditionalInfo = publicationInfo
     }
 
-    fun staging(closure: Closure<*>) {
-        val action = ConfigureUtil.configureUsing<StagingPublicationSettings>(closure)
-        val staging = StagingPublicationSettings()
+    fun staging(action: Action<StagingPublicationSettings>) {
+        val staging = objects.newInstance(StagingPublicationSettings::class.java)
         action.execute(staging)
 
         staging(staging)
