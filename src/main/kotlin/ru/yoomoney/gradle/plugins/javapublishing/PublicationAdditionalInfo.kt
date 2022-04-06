@@ -1,7 +1,9 @@
 package ru.yoomoney.gradle.plugins.javapublishing
 
 import groovy.lang.Closure
-import org.gradle.util.ConfigureUtil
+import org.gradle.api.Action
+import org.gradle.api.model.ObjectFactory
+import javax.inject.Inject
 
 /**
  * Настройки дополнительной информацией о публикуемом артефакте.
@@ -10,7 +12,7 @@ import org.gradle.util.ConfigureUtil
  * @author horyukova
  * @since 26.02.2021
  */
-class PublicationAdditionalInfo {
+open class PublicationAdditionalInfo @Inject constructor(private val objects: ObjectFactory) {
     /**
      * Нужно ли добавлять дополнительную информацию при публикации
      */
@@ -48,9 +50,8 @@ class PublicationAdditionalInfo {
         closure.call()
     }
 
-    fun developer(closure: Closure<*>) {
-        val action = ConfigureUtil.configureUsing<Developer>(closure)
-        val dev = Developer()
+    fun developer(action: Action<in Developer>) {
+        val dev = objects.newInstance(Developer::class.java)
         action.execute(dev)
 
         developers!!.add(dev)
@@ -59,9 +60,8 @@ class PublicationAdditionalInfo {
     /**
      * Методы для удобного конструирования license из build.gradle
      */
-    fun license(closure: Closure<*>) {
-        val action = ConfigureUtil.configureUsing<License>(closure)
-        val newLicense = License()
+    fun license(action: Action<in License>) {
+        val newLicense = objects.newInstance(License::class.java)
         action.execute(newLicense)
 
         license(newLicense)
@@ -74,7 +74,7 @@ class PublicationAdditionalInfo {
     /**
      * Информация о разработчике проекта
      */
-    class Developer {
+    open class Developer {
         var name: String? = null
         var email: String? = null
         var organization: String? = null
@@ -84,7 +84,7 @@ class PublicationAdditionalInfo {
     /**
      * Информация о лицензии
      */
-    class License {
+    open class License {
         var name: String? = null
         var url: String? = null
     }
