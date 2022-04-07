@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [4.0.1](https://github.com/yoomoney/java-artifact-publish-plugin/pull/11) (07-04-2022)
+
 Перевыпуск релиза из-за проблем с синхронизацией maven-central
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [4.0.0](https://github.com/yoomoney/java-artifact-publish-plugin/pull/10) (06-04-2022)
 
 * Удалено использование `deprecated` `gradle api`;
