@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [4.0.1](https://github.com/yoomoney/java-artifact-publish-plugin/pull/11) (07-04-2022)
 
 Перевыпуск релиза из-за проблем с синхронизацией maven-central
